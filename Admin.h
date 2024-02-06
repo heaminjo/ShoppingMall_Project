@@ -1,10 +1,10 @@
 #pragma once
 #include "class.h"
-//2.Ä«Å×°í¸® ¸®½ºÆ®¿¡ Ä«Å×°í¸® ½ºÅÃ Ãß°¡
+//2.ì¹´í…Œê³ ë¦¬ ë¦¬ìŠ¤íŠ¸ì— ì¹´í…Œê³ ë¦¬ ìŠ¤íƒ ì¶”ê°€
 void Category_Push(List* list) {
 	printf("\n");
-	printf("Ä«Å×°í¸®¸¦ Ãß°¡ÇÕ´Ï´Ù.\n");
-	Stack* category = create_Stack();  //Ä«Å×°í¸® ¹ÝÈ¯
+	printf("ì¹´í…Œê³ ë¦¬ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.\n");
+	Stack* category = create_Stack();  //ì¹´í…Œê³ ë¦¬ ë°˜í™˜
 	Stack* pre = list->head;
 	int count = list->count;
 	if (count == 0) {
@@ -19,10 +19,10 @@ void Category_Push(List* list) {
 	list->count++;
 }
 
-//»óÇ° Ãß°¡
-//1.»óÇ° ÀÔ·Â
-//2.ÀúÀåÇÒ Ä«Å×°í¸® ÀÔ·Â
-//½ºÅÃ¿¡ »óÇ° Ãß°¡
+//ìƒí’ˆ ì¶”ê°€
+//1.ìƒí’ˆ ìž…ë ¥
+//2.ì €ìž¥í•  ì¹´í…Œê³ ë¦¬ ìž…ë ¥
+//ìŠ¤íƒì— ìƒí’ˆ ì¶”ê°€
 Product* create_product() {
 	Product* product = new Product();
 	memset(product, NULL, sizeof(product));
@@ -31,11 +31,11 @@ Product* create_product() {
 	int price;
 	char type[30];
 
-	printf("»óÇ°ÀÌ¸§:");
+	printf("ìƒí’ˆì´ë¦„:");
 	scanf_s("%s", name, sizeof(name));
-	printf("°¡°Ý:");
+	printf("ê°€ê²©:");
 	scanf_s("%d", &price);
-	printf("Á¾·ù:");
+	printf("ì¢…ë¥˜:");
 	scanf_s("%s", type, sizeof(type));
 
 	strcpy(product->name, name);
@@ -45,7 +45,7 @@ Product* create_product() {
 	return product;
 }
 
-//½ºÅÃ¿¡ ÀúÀå ÇÔ¼ö
+//ìŠ¤íƒì— ì €ìž¥ í•¨ìˆ˜
 void Stack_Push(Stack* stack, Product* product) {
 	Product* top = stack->top;
 	int count = stack->count;
@@ -54,12 +54,12 @@ void Stack_Push(Stack* stack, Product* product) {
 	}
 	else{
 		product->next = top;
-		top = product;
+		stack->top = product;
 	}
 	stack->count++;
 }
 
-//Ä«Å×°í¸® ¸®½ºÆ® ¾È ½ºÅÃ¿¡ »óÇ°ÀúÀå
+//ì¹´í…Œê³ ë¦¬ ë¦¬ìŠ¤íŠ¸ ì•ˆ ìŠ¤íƒì— ìƒí’ˆì €ìž¥
 void List_Push(List* CategoryList, Product* product, int count) {
 	Stack* pre = CategoryList->head;
 	if (count == 1) {
@@ -67,9 +67,9 @@ void List_Push(List* CategoryList, Product* product, int count) {
 	}
 	else if (count > 1) {
 		for (int i = 0; i < count-1; i++) {
-			pre = pre->next;       //ÀúÀåÇÒ ½ºÅÃ Ã£±â
+			pre = pre->next;       //ì €ìž¥í•  ìŠ¤íƒ ì°¾ê¸°
 		}
-		Stack_Push(pre, product);  //½ºÅÃ ÀúÀåÇÔ¼ö È£Ãâ
+		Stack_Push(pre, product);  //ìŠ¤íƒ ì €ìž¥í•¨ìˆ˜ í˜¸ì¶œ
 	}
-	CategoryList->count++;
+	pre->count++;
 }
