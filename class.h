@@ -3,32 +3,33 @@
 #include <stdlib.h>
 #include <string.h>
 
-//»óÇ°
+
+//ìƒí’ˆ
 struct Product {
 	char name[30];
 	int price;
 	char type[30];
 	char category[30];
 	Product* next;
+	Product* prev;
 };
 
-//Ä«Å×°í¸®
-struct Stack {
-	char category_Name[30];
-	Product* data;
-	Product* top;
-	int count;
-	Stack* next;
-};
-
-//»óÇ° Ä«Å×°í¸®µéÀ» ÀúÀåÇÒ ¸®½ºÆ®
+//ìƒí’ˆ ì¹´í…Œê³ ë¦¬ë“¤ì„ ì €ì¥í•  ë¦¬ìŠ¤íŠ¸
 struct List {
-	Stack* data;
-	Stack* head;
+	char CategoryName[30];
+	Product* head;
+	Product* tail;
+	List* next;
+	List* prev;
+	int count;
+};
+struct CategoryList {
+	List* head;
+	List* tail;
 	int count;
 };
 
-//Ä«Å×°í¸® ¸®½ºÆ® ÃÊ±âÈ­
+//ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
 List* create_List() {
 	List* list = new List;
 	memset(list, NULL, sizeof(list));
@@ -36,125 +37,69 @@ List* create_List() {
 
 	return list;
 }
+CategoryList* create_CategoryList() {
+	CategoryList* list = new CategoryList;
+	memset(list, NULL, sizeof(list));
+	list->count = 0;
 
-//Ä«Å×°í¸® Ãâ·Â
-void print_Category(List*list) {
-	Stack* pre = list->head;
-
-	for (int i = 0; i < list->count; i++) {
-		printf("%d. %s\n", i+1,pre->category_Name);
-		pre = pre->next;
-	}
-	printf("\n");
+	return list;
 }
-void print_Stack(Stack* stack) {
-	Product* top = stack->top;
-	printf("=====»óÇ° ¸ñ·Ï=====\n");
-	for (int i = 0; i < stack->count; i++) {
-		printf("[»óÇ°¸í]: %s\n", top->name);
-		printf("[»óÇ° Å¸ÀÔ]: %s\n", top->type);
-		printf("[°¡°İ]: %d\n", top->price);
+
+//ì¹´í…Œê³ ë¦¬ ì¶œë ¥
+void print_Category(CategoryList*list) {
+		List* pre = list->head;
+		for (int i = 0; i < list->count; i++) {
+			printf("%d. %s\n", i + 1, pre->CategoryName);
+			pre = pre->next;
+		}
 		printf("\n");
-		
-		top = top->next;
+}
+
+//ë¦¬ìŠ¤íŠ¸ ì¶œë ¥
+void print_List(List*list) {
+	Product* pre = list->head;
+	if (list->count == 0) {
+		printf("ë“±ë¡ëœ ìƒí’ˆì´ ì—†ìŠµë‹ˆë‹¤.");
 	}
-	printf("=================\n");
+	else{
+		printf("=====ìƒí’ˆ ëª©ë¡=====\n");
+		for (int i = 0; i < list->count; i++) {
+			printf("%d\n", i + 1);
+			printf("[ìƒí’ˆëª…]: %s\n", pre->name);
+			printf("[ìƒí’ˆ íƒ€ì…]: %s\n", pre->type);
+			printf("[ê°€ê²©]: %d\n", pre->price);
+			printf("\n");
+
+			pre = pre->next;
+		}
+		printf("=================\n");
+	}
 	printf("\n");
 }
-//½ºÅÃ ÃÊ±âÈ­
-Stack* create_Stack() {
-	Stack* stack = new Stack;
-	memset(stack, NULL, sizeof(stack));
-	char name[30];
-	printf("Ä«Å×°í¸® ÀÌ¸§ ÀÔ·Â:");
-	scanf_s("%s", name, sizeof(name));
-	strcpy(stack->category_Name, name);
-	stack->count = 0;
 
-	return stack;
+//ì„ íƒ í•¨ìˆ˜
+int choice() {
+	int choice;
+	printf("ì…ë ¥:");
+	scanf_s("%d", &choice);
+
+	return choice;
 }
 void MainManu() {
-	printf("======¸ŞÀÎ ¸Ş´º======\n");
-	printf("1.°í°´ ÆäÀÌÁö\n");
-	printf("2.°ü¸®ÀÚ ÆäÀÌÁö\n");
+	printf("======ë©”ì¸ ë©”ë‰´======\n");
+	printf("1.ê³ ê° í˜ì´ì§€\n");
+	printf("2.ê´€ë¦¬ì í˜ì´ì§€\n");
 	printf("\n");
-	printf("ÀÔ·Â:");
 }
 void Customer_Page() {
-	printf("======°í°´ ÆäÀÌÁö======\n");
+	printf("======ê³ ê° í˜ì´ì§€======\n");
 }
 void Admin_Page() {
-	printf("======°ü¸®ÀÚ ÆäÀÌÁö======\n");
-	printf("1.Ä«Å×°í¸® Ãß°¡\n");
-	printf("2.»óÇ° Ãß°¡\n");
-	printf("3.»óÇ° Á¦°Å\n");
-	printf("4.¸ÅÃâÇöÈ²\n");
-	printf("5.Á¾·á\n");
+	printf("======ê´€ë¦¬ì í˜ì´ì§€======\n");
+	printf("1.ì¹´í…Œê³ ë¦¬ ì¶”ê°€\n");
+	printf("2.ìƒí’ˆ ì¶”ê°€\n");
+	printf("3.ìƒí’ˆ ì œê±°\n");
+	printf("4.ë§¤ì¶œí˜„í™©\n");
+	printf("5.ì¢…ë£Œ\n");
 	printf("\n");
-	printf("ÀÔ·Â:");
 }
-/*
-//¸ŞÀÎ ½ºÅÃ Ãß°¡
-void add(Stack* stack, Expend* ex) {
-	if (stack == 0) {
-		stack->top = ex;
-	}
-	else {
-		ex->next = stack->top;
-		stack->top = ex;
-	}
-	stack->data = ex;
-	stack->money += ex->price;
-	stack->count++;
-}
-void detail_Print(Stack* stack, char category[]) {
-	printf("\n");
-	printf("[%s ¸ñ·Ï]\n", category);
-	Expend* top = stack->top;
-
-	for (int i = 0; i < stack->count; i++) {
-		printf("¼Òºñ³»¿ë:%s\n", top->name);
-		printf("±İ¾×:%d\n", top->price);
-		printf("----------------\n");
-		top = top->next;
-	}
-}
-void print(Stack* main, Stack* food, Stack* health, Stack* life) {
-	int select;
-
-	printf("=====Åë°è=====\n");
-	printf("¡ÙÃÑ ÁöÃâ ±İ¾×¡Ù:%d¿ø\n", main->money);
-	printf("\n");
-	printf("[½Äºñ]:%d¿ø\n", food->money);
-	printf("[°Ç°­]:%d¿ø\n", health->money);
-	printf("[¹®È­]:%d¿ø\n", life->money);
-
-	printf("\n");
-	printf("---»ó¼¼º¸±â---\n");
-	printf("1.½Äºñ / 2.°Ç°­ / 3.¹®È­ / 9.º¸Áö¾ÊÀ½\n");
-	printf("¹øÈ£ ¼±ÅÃ:");
-	scanf_s("%d", &select);
-
-	switch (select)
-	{
-	case 1: {
-		char cate[10] = "½Äºñ";
-		detail_Print(food, cate);
-		break;
-	}
-	case 2: {
-		char cate[10] = "°Ç°­";
-		detail_Print(health, cate);
-		break;
-	}
-	case 3: {
-		char cate[10] = "¹®È­";
-		detail_Print(life, cate);
-		break;
-	}
-	case 9:
-		printf("¸ŞÀÎÀ¸·Î µ¹¾Æ°©´Ï´Ù.\n");
-		break;
-	}
-}
-*/
