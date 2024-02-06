@@ -1,51 +1,59 @@
 #include "class.h"
 #include "Admin.h"
 #include "Customer.h"
+
+//ìƒí’ˆ ì¶”ê°€ë¥¼ 2ë²ˆ í• ìˆ˜ì—†ëŠ” ì˜¤ë¥˜
 int main(void) {
 	int select;
-	List* CategoryList = new List();  //Ä«Å×°í¸® ¸®½ºÆ®
+	List* CategoryList = new List();  //ì¹´í…Œê³ ë¦¬ ë¦¬ìŠ¤íŠ¸
 	Stack* MainStack = new Stack();
 	while (1) {
 		MainManu();
-		scanf_s("%d", &select);
+		select = choice();
 		switch (select)
 		{
-		case 1: { //°í°´ ÆäÀÌÁö
+		case 1: { //ê³ ê° í˜ì´ì§€
 			print_Stack(MainStack);
 			Customer_Page();
 			break;
 		}
-		case 2: {  //°ü¸®ÀÚ ÆäÀÌÁö
+		case 2: {  //ê´€ë¦¬ì í˜ì´ì§€
 			Admin_Page();
-			scanf_s("%d", &select);
+			select = choice();
 			switch (select)
 			{
-			case 1: { //Ä«Å×°í¸® Ãß°¡
+			case 1: { //ì¹´í…Œê³ ë¦¬ ì¶”ê°€
 				Category_Push(CategoryList);
 				break;
 			}
-			case 2: {  //»óÇ° Ãß°¡
-				int num;
-
+			case 2: {  //ìƒí’ˆ ì¶”ê°€
+				//ì¹´í…Œê³ ë¦¬ê°€ ì—†ëŠ” ê²½ìš°
+				if (CategoryList->count == 0) {
+					printf("ì¹´í…Œê³ ë¦¬ê°€ ì—†ìŠµë‹ˆë‹¤.\n");
+					break;
+				}
 				print_Category(CategoryList);
-				printf("»óÇ° Ä«Å×°í¸®:");
-				scanf_s("%d", &num);
+				select = choice();
 
-				//¸¸¾à Ä«Å×°í¸® ¹øÈ£ Áß ¾ø´Â ¹øÈ£¸¦ °í¸¦°æ¿ì
-				if (num > CategoryList->count) {
-					printf("Àß¸øµÈ ¹øÈ£ÀÔ´Ï´Ù.");
+				//ë§Œì•½ ì¹´í…Œê³ ë¦¬ ë²ˆí˜¸ ì¤‘ ì—†ëŠ” ë²ˆí˜¸ë¥¼ ê³ ë¥¼ê²½ìš°
+				if (select > CategoryList->count) {
+					printf("ì˜ëª»ëœ ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 					break;
 				}
 				Product* product = create_product();
-				List_Push(CategoryList, product,num); //Ä«Å×°í¸® »óÇ° Ãß°¡
-				Stack_Push(MainStack, product); //¸ŞÀÎ »óÇ° Ãß°¡
+				List_Push(CategoryList, product,select); //ì¹´í…Œê³ ë¦¬ ìƒí’ˆ ì¶”ê°€
+				Stack_Push(MainStack, product); //ë©”ì¸ ìƒí’ˆ ì¶”ê°€
 				break;
+			}
+			case 3: {  //ìƒí’ˆ ì œê±°
+				print_Stack(MainStack);
+				select = choice();
 			}
 			case 5: {
 				break;
 			}
 			default:
-				printf("´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+				printf("ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 				break;
 			}
 		}
