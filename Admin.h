@@ -1,20 +1,24 @@
 #pragma once
 #include "class.h"
-//2.카테고리 리스트에 카테고리 스택 추가
-void Category_Push(List* list) {
+//카테고리 추가
+void Category_Push(CategoryList* list) {
+	char name[30];
 	printf("\n");
 	printf("카테고리를 추가합니다.\n");
-	Stack* category = create_Stack();  //카테고리 반환
-	Stack* pre = list->head;
+	printf("카테고리 이름:");
+	scanf_s("%s", name, sizeof(name));
+
+	List* category = create_List(); //카테고리 리스트 생성
+	strcpy(category->CategoryName, name);
 	int count = list->count;
+
 	if (count == 0) {
-		list->head = category;
+		list->head = list->tail = category;
 	}
 	else {
-		for (int i = 0; i < count - 1; i++) {
-			pre = pre->next;
-		}
-		pre->next = category;
+		category->prev = list->tail;
+		list->tail->next = category;
+		list->tail = category;
 	}
 	list->count++;
 }
@@ -44,32 +48,27 @@ Product* create_product() {
 
 	return product;
 }
-
-//스택에 저장 함수
-void Stack_Push(Stack* stack, Product* product) {
-	Product* top = stack->top;
-	int count = stack->count;
-	if (count == 0) {
-		stack->top = product;
+void Product_Push(List*list,Product*product) {
+	if (list->count == 0) {
+		list->head = list->tail = product;
 	}
-	else{
-		product->next = top;
-		stack->top = product;
+	else {
+		product->prev = list->tail;
+		list->tail->next = product;
+		list->tail = product;
 	}
-	stack->count++;
+	list->count++;
 }
-
-//카테고리 리스트 안 스택에 상품저장
-void List_Push(List* CategoryList, Product* product, int count) {
-	Stack* pre = CategoryList->head;
+//카테고리에 추가할 리스트 찾기
+List* Category_PushList(CategoryList* CategoryList,int count) {
+	List* pre = CategoryList->head;
 	if (count == 1) {
-		Stack_Push(pre, product);
+		return pre;
 	}
 	else if (count > 1) {
-		for (int i = 0; i < count-1; i++) {
+		for (int i = 0; i < count - 1; i++) {
 			pre = pre->next;       //저장할 스택 찾기
 		}
-		Stack_Push(pre, product);  //스택 저장함수 호출
 	}
-	pre->count++;
+	return pre;
 }
