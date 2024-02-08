@@ -49,6 +49,7 @@ Product* create_product() {
 	return product;
 }
 void Product_Push(List*list,Product*product) {
+	strcpy(product->category, list->CategoryName);
 	if (list->count == 0) {
 		list->head = list->tail = product;
 	}
@@ -59,8 +60,8 @@ void Product_Push(List*list,Product*product) {
 	}
 	list->count++;
 }
-//카테고리에 추가할 리스트 찾기
-List* Category_PushList(CategoryList* CategoryList,int count) {
+//카테고리 탐색
+List* Category_Find(CategoryList* CategoryList,int count) {
 	List* pre = CategoryList->head;
 	if (count == 1) {
 		return pre;
@@ -72,3 +73,25 @@ List* Category_PushList(CategoryList* CategoryList,int count) {
 	}
 	return pre;
 }
+
+//상품 제거
+void Remove_Product(List* list, int number) {
+	Product* del = NULL;
+	Product* pre = list->head;
+
+	if (number == 1) {
+		del = list->head;
+		list->head = del->next;
+	}
+	else if (number > 1) {
+		for (int i = 1; i < number-1; i++) {
+			pre = pre->next;
+		}
+		del = pre->next;
+		pre->next = del->next;
+		del->next->prev = pre;
+	}
+	delete del;
+	list->count--;
+}
+
