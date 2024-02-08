@@ -49,6 +49,23 @@ int main(void) {
 			}
 			case 3: {  //상품 제거
 				
+				if (CategoryList->count == 0) {
+					printf("카테고리가 없습니다.\n");
+					break;
+				}
+				print_Category(CategoryList); 
+				select = choice();  //카테고리 선택
+				List* categorylist = Category_Find(CategoryList, select); //추가할 카테고리 가져오기
+				if (categorylist->count == 0) {
+					printf("상품이 없습니다.\n");
+					break;
+				}
+				print_List(categorylist);
+				select = choice();  //상품 선택
+				
+				Remove_Product(categorylist, select);
+				print_List(categorylist);
+				break;
 			}
 			case 5: {
 				break;
