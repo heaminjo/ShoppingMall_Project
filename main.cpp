@@ -40,11 +40,10 @@ int main(void) {
 					printf("잘못된 번호입니다.");
 					break;
 				}
-				Product* product = create_product();
-				List* list = Category_PushList(categoryList,select); //카테고리 상품 추가
-				printf("리스트:%s 추가\n", list->CategoryName);
-				Product_Push(MainList, product); //메인 상품 추가
-				Product_Push(list, product);
+
+				List* categoryList = Category_Find(CategoryList,select); //추가할 카테고리 가져오기
+				Product_Push(MainList,&number); //메인 상품 추가
+				Product_Push(categoryList,&number);
 				break;
 			}
 			case 3: {  //상품 제거
