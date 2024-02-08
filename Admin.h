@@ -77,20 +77,30 @@ List* Category_Find(CategoryList* CategoryList,int count) {
 //상품 제거
 void Remove_Product(List* list, int number) {
 	Product* del = NULL;
-	Product* pre = list->head;
-
-	if (number == 1) {
+	Product* head = list->head;
+	Product* tail = list->tail;
+	Product* pre = NULL;
+	
+	if (head->number == number) {
 		del = list->head;
-		list->head = del->next;
 	}
-	else if (number > 1) {
-		for (int i = 1; i < number-1; i++) {
-			pre = pre->next;
+	else if (tail->number == number) {
+		del = list->tail;
+	}
+	else {
+		while (1) {
+			if (head->number == number) {
+				break;
+			}
+			head = head->next;
 		}
-		del = pre->next;
+		del = head;
+		pre = head->prev;
+
 		pre->next = del->next;
 		del->next->prev = pre;
 	}
+
 	delete del;
 	list->count--;
 }
