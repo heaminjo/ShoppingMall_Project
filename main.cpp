@@ -64,7 +64,7 @@ int main(void) {
 				select = choice();  //상품 선택
 				
 				Remove_Product(categorylist, select);
-				print_List(categorylist);
+				Remove_Product(MainList, select);
 				break;
 			}
 			case 5: {
