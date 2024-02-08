@@ -10,6 +10,7 @@ struct Product {
 	int price;
 	char type[30];
 	char category[30];
+	int number;
 	Product* next;
 	Product* prev;
 };
