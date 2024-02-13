@@ -2,18 +2,17 @@
 #include "Admin.h"
 #include "Customer.h"
 
-//상품 추가를 2번 할수없는 오류
 int main(void) {
 	int select;
 	CategoryList* categoryList = create_CategoryList();  //카테고리 리스트
-	List* MainList =create_List();
+	List* Represent = create_List();
 	while (1) {
 		MainManu();
 		select = choice();
 		switch (select)
 		{
 		case 1: { //고객 페이지
-			print_List(MainList);
+			print_List(Represent);
 			Customer_Page();
 			break;
 		}
@@ -26,7 +25,14 @@ int main(void) {
 				Category_Push(categoryList);
 				break;
 			}
-			case 2: {  //상품 추가
+			case 2: {  //대표 카테고리 설정
+			print_CategoryNum(CategoryList);
+			select = choice();
+
+			Represent= Category_Find(CategoryList, select);				printf("대표 카테고리가 설정 되었습니다.\n");
+			break;
+			}
+			case 3: {  //상품 추가
 				//카테고리가 없는 경우
 				if (categoryList->count == 0) {
 					printf("카테고리가 없습니다.\n");
@@ -42,11 +48,11 @@ int main(void) {
 				}
 
 				List* categoryList = Category_Find(CategoryList,select); //추가할 카테고리 가져오기
-				Product_Push(MainList,&number); //메인 상품 추가
-				Product_Push(categoryList,&number);
+				Product* product = create_product();
+				Product_Push(categoryList,product);
 				break;
 			}
-			case 3: {  //상품 제거
+			case 4: {  //상품 제거
 				
 				if (CategoryList->count == 0) {
 					printf("카테고리가 없습니다.\n");
@@ -63,7 +69,6 @@ int main(void) {
 				select = choice();  //상품 선택
 				
 				Remove_Product(categorylist, select);
-				Remove_Product(MainList, select);
 				break;
 			}
 			case 5: {
