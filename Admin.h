@@ -1,6 +1,7 @@
 #pragma once
 #include "class.h"
 //카테고리 추가
+int number =1000;
 void Category_Push(CategoryList* list) {
 	char name[30];
 	printf("\n");
@@ -49,8 +50,6 @@ Product* create_product() {
 	return product;
 }
 void Product_Push(List*list,Product*product) {
-	Product* product = create_product(); //상품 생성
-	product->number = *number;
 	strcpy(product->category, list->CategoryName);
 	if (list->count == 0) {
 		list->head = list->tail = product;
