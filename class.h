@@ -98,9 +98,10 @@ void Customer_Page() {
 void Admin_Page() {
 	printf("======관리자 페이지======\n");
 	printf("1.카테고리 추가\n");
-	printf("2.상품 추가\n");
-	printf("3.상품 제거\n");
-	printf("4.매출현황\n");
-	printf("5.종료\n");
+	printf("2.대표 카테고리 설정\n");
+	printf("3.상품 추가\n");
+	printf("4.상품 제거\n");
+	printf("5.매출현황\n");
+	printf("6.종료\n");
 	printf("\n");
 }
