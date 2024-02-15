@@ -1,11 +1,32 @@
 #include "class.h"
 #include "Admin.h"
 #include "Customer.h"
+bool on = false;
+
+//Admin
+List* create_List(); //리스트 생성 및 초기화
+CategoryList* create_CategoryList(); //카테고리 리스트 생성 및 초기화
+List* Category_Find(CategoryList* CategoryList, int count); //카테고리 탐색
+void Product_Push(List* list, Product*product); //상품 추가
+void Remove_Product(List* list, int number); //상품 제거
+void print_CategoryNum(CategoryList* list); //카테고리 선택 창
+void print_List(List* list); //리스트 출력
+
+//Customer
+void JoinMenu(); //회원 메뉴
+void NotJoinMenu(); //비회원 메뉴
+bool Consent();     //회원 가입 동의 여부
+Member_List* create_MemberList(); // 회원 목록 생성 및 초기화
+bool OverLap_Check(Member_List* list, char id[]); //아이디 중복 체크
+bool Password_Check(char pw[], char pw2[]); //비밀번호 재확인 체크
+Member* create_Member(Member_List* list);//회원 정보 입력 후 생성
+void Member_Push(Member_List* list, Member* member);//회원 저장
 
 int main(void) {
 	int select;
 	CategoryList* categoryList = create_CategoryList();  //카테고리 리스트
-	List* Represent = create_List();
+	List* Represent = create_List();  //대표 카테고리
+	Member_List* MemberList = create_MemberList();  //회원 리스트
 	while (1) {
 		MainManu();
 		select = choice();
@@ -23,13 +44,39 @@ int main(void) {
 			case 2: {  //찜
 			}
 			case 3: {  //마이페이지
-				if (on == true) {
+				if (on == true) {           //로그인 on
 					JoinMenu();
 					select = choice();
 				}
-				else if(on == false) {
+				else if(on == false) {      //로그인 off
 					NotJoinMenu();
 					select = choice();
+					switch (select)
+					{
+					case 1: { //로그인
+
+					}
+					case 2: { //회원가입
+						bool check;
+
+						//회원가입 동의 여부체크
+						check = Consent();
+						if (check == false) {
+							printf("메인으로 돌아갑니다.\n");
+							break;
+						}
+						else if (check == true) {
+							Member* member = create_Member(MemberList);
+							Member_Push(MemberList, member);
+							printf("회원가입이 성공적으로 끝났습니다.\n");
+							printf("\n");
+						}
+						break;
+					}
+					default:
+						break;
+					}
+				}
 				}
 			break;
 		}
