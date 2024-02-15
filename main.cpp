@@ -7,7 +7,7 @@ bool on = false;
 List* create_List(); //리스트 생성 및 초기화
 CategoryList* create_CategoryList(); //카테고리 리스트 생성 및 초기화
 List* Category_Find(CategoryList* CategoryList, int count); //카테고리 탐색
-void Product_Push(List* list, Product*product); //상품 추가
+void Product_Push(List* list, Product*product,int *number); //상품 추가
 void Remove_Product(List* list, int number); //상품 제거
 void print_CategoryNum(CategoryList* list); //카테고리 선택 창
 void print_List(List* list); //리스트 출력
@@ -113,7 +113,8 @@ int main(void) {
 
 				List* categoryList = Category_Find(CategoryList,select); //추가할 카테고리 가져오기
 				Product* product = create_product();
-				Product_Push(categoryList,product);
+				Product_Push(categoryList,product,&number);
+				number++;
 				break;
 			}
 			case 4: {  //상품 제거
