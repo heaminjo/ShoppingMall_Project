@@ -14,6 +14,23 @@ int main(void) {
 		case 1: { //고객 페이지
 			print_List(Represent);
 			Customer_Page();
+			select = choice(); 
+			switch (select)
+			{
+			case 1: {  //카테고리
+				break;
+			}
+			case 2: {  //찜
+			}
+			case 3: {  //마이페이지
+				if (on == true) {
+					JoinMenu();
+					select = choice();
+				}
+				else if(on == false) {
+					NotJoinMenu();
+					select = choice();
+				}
 			break;
 		}
 		case 2: {  //관리자 페이지
