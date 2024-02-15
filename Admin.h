@@ -49,7 +49,8 @@ Product* create_product() {
 
 	return product;
 }
-void Product_Push(List*list,Product*product) {
+void Product_Push(List*list,Product*product,int* number) {
+	product->number = *number;
 	strcpy(product->category, list->CategoryName);
 	if (list->count == 0) {
 		list->head = list->tail = product;
