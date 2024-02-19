@@ -61,6 +61,16 @@ int main(void) {
 					Page_print(memberpage);
 					JoinMenu();
 					select = choice();
+					switch (select)
+					{
+					case 4: {  //로그아웃
+						printf("로그아웃합니다.\n");
+						on = false;
+						memberpage->data = NULL;
+					}
+					default:
+						break;
+					}
 				}
 				else if(on == false) {
 					NotJoinMenu();
