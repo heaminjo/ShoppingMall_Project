@@ -1,20 +1,25 @@
 #pragma once
 #include "class.h"
 #include "Admin.h"
-void JoinMenu();
-void NotJoinMenu();
 
 struct Member{       //회원
 	char id[30];
 	char pw[30];
 	char name[10];
 	int age;
+	Member* next;
+	Member* prev;
 };
-struct MemberPage {  //회원 페이지
+struct Member_Page {  //회원 페이지
 	Member* data;
 	List* basket;   //장바구니
 	List* buyList;  //구매목록
 	List* scrap;    //찜
+};
+struct Member_List { // 추가 !
+	Member* head;
+	Member* tail;
+	int count;
 };
 
 void JoinMenu() {              //회원 메뉴
@@ -37,7 +42,12 @@ Member_List* create_MemberList() {
 
 	return list;
 }
+Member_Page* create_Page() {
+	Member_Page* list = new Member_Page;
+	memset(list, NULL, sizeof(list));
 
+	return list;
+}
 bool Consent() { //회원가입 동의 출력
 	char result;
 	printf("회원가입하는것에 동의합니까?(Y / N)\n");
@@ -52,17 +62,21 @@ bool Consent() { //회원가입 동의 출력
 		return 0;
 	}
 }
+
 //아이디 중복 체크
 bool OverLap_Check(Member_List* list, char id[]) {
 	if (list->count == 0) {
 		return false;
 	}
 	else {
+		int check=1;
 		Member* temp = list->head;
 		for (int i = 0; i < list->count; i++) {
-			if (temp->id == id) {
+			check = strcmp(temp->id, id);
+			if (check ==0) {
 				return true;
 			}
+			temp = temp->next;
 		}
 	}
 	return false;
@@ -79,12 +93,16 @@ bool Password_Check(char pw[],char pw2[]) {
 		return false;
 	}
 }
-//회원 생성
-Member* create_Member(Member_List * list) {
-	bool check;
-	Member* member= new Member();
+//회원 초기화
+Member* create_Member() {
+	Member* member = new Member();
 	memset(member, NULL, sizeof(member));
 
+	return member;
+}
+Member* create_Member_Data(Member_List* list, Member* member) {
+	bool check;
+	
 	char id[30];
 	char pw[30];
 	char pw2[30];
@@ -95,9 +113,10 @@ Member* create_Member(Member_List * list) {
 	//아이디 중복 검사
 	while (1) {         
 		printf("아이디:");
-		scanf_s("%s", name, sizeof(name));
+		scanf_s("%s", id, sizeof(id));
 
-		check = OverLap_Check(list, name);     //아이디 중복 체크
+		check = OverLap_Check(list, id); //아이디 중복 체크
+
 		if (check == true) {
 			printf("중복된 아이디 입니다.\n다시 입력해주세요.\n");
 		}
@@ -147,7 +166,50 @@ void Member_Push(Member_List* list, Member* member) {
 	}
 	list->count++;
 }
+//회원페이지에 로그인 회원 저장
+void Page_Login(Member_Page* page, Member* member) {
+	page->data = member;
+	printf("로그인에 성공하셨습니다.\n");
+}
+//일치하는 Member변수 탐색
+bool Login_Member_Search(Member_Page* page,Member_List* list,char* id,char* pw) {
+	Member* member = list->head;
+	int str1, str2;
 
+	for (int i = 0; i < list->count; i++) {
+		str1 = strcmp(member->id, id);
+		str2 = strcmp(member->pw, pw);
+		//둘다 일치 할경우 로그인 후 true 리턴
+		if (str1 == 0 && str2 == 0) {
+			Page_Login(page, member);
+			return true;
+		}
+		member = member->next;
+	}
+	//일치하는것이 없을 경우 그대로 false 리턴
+	return false;
+}
+//아이디 입력
+char* ID_Enter() {
+	char* ptr = (char*)malloc(sizeof(char) * 30);
+	char id[30];
+
+	printf("아이디:");
+	scanf_s("%s", id, sizeof(id));
+
+	strcpy(ptr, id);
+	return ptr;
+}
+//비밀번호 입력
+char* Password_Enter() {
+	char* ptr = (char*)malloc(sizeof(char) * 30);
+	char pw[30];
+	printf("비밀번호:");
+	scanf_s("%s", pw, sizeof(pw));
+
+	strcpy(ptr, pw);
+	return ptr;
+}
 //회원 목록
 void Member_Print(Member_List* list) {
 	Member* member = list->head;
@@ -166,4 +228,10 @@ void Member_Print(Member_List* list) {
 		printf("=================\n");
 	}
 	printf("\n");
+}
+//회원페이지 출력
+void Page_print(Member_Page* page) {
+	Member* member = page->data;
+
+	printf("%s님 환영합니다.\n", member->name);
 }
