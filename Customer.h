@@ -235,3 +235,14 @@ void Page_print(Member_Page* page) {
 
 	printf("%s님 환영합니다.\n", member->name);
 }
+
+//카테고리 별로 출력
+void Category_Print(CategoryList* list) {
+	List* temp = list->head;
+
+	for (int i = 0; i < list->count; i++) {
+		printf("[%s]\n", temp->CategoryName);
+		print_List(temp);
+		temp = temp->next;
+	}
+}
