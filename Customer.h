@@ -210,6 +210,15 @@ char* Password_Enter() {
 	strcpy(ptr, pw);
 	return ptr;
 }
+bool Login(Member_Page* page, Member_List* list) {
+	bool check;
+	//아이디&비밀번호 입력
+	char* id = ID_Enter();
+	char* pw = Password_Enter();
+
+	check = Login_Member_Search(page,list, id, pw);
+	return check;
+}
 //회원 목록
 void Member_Print(Member_List* list) {
 	Member* member = list->head;
@@ -236,13 +245,3 @@ void Page_print(Member_Page* page) {
 	printf("%s님 환영합니다.\n", member->name);
 }
 
-//카테고리 별로 출력
-void Category_Print(CategoryList* list) {
-	List* temp = list->head;
-
-	for (int i = 0; i < list->count; i++) {
-		printf("[%s]\n", temp->CategoryName);
-		print_List(temp);
-		temp = temp->next;
-	}
-}
