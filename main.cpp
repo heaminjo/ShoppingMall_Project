@@ -11,7 +11,6 @@ void Product_Push(List* list, Product*product,int* number); //상품 추가
 void Remove_Product(List* list, int number); //상품 제거
 void print_CategoryNum(CategoryList* list); //카테고리 선택 창
 void print_List(List* list); //리스트 출력
-void Category_Print(CategoryList* list); //카테고리 출력
 
 //Customer
 void JoinMenu(); //회원 메뉴
@@ -33,6 +32,7 @@ bool Login_Member_Search(Member_Page* page, Member_List* list, char* id, char* p
 void Page_Login(Member_Page* page, Member* member);//페이지에 로그인
 void Page_print(Member_Page* page); //회원 페이지 출력
 
+
 int main(void) {
 
 	int select;
@@ -52,11 +52,65 @@ int main(void) {
  
 			switch (select)
 			{
-			case 1: {  //카테고리
-				Category_Print(CategoryList);
+			case 1: {  //카테고리 출력
+				//카테고리가 없는 경우
+				while (1) {
+					if (CategoryList->count == 0) {
+						printf("카테고리가 없습니다.\n");
+						break;
+					}
+
+					print_CategoryNum(CategoryList);
+					printf("0. 메인으로\n");
+					select = choice();
+
+					//만약 카테고리 번호 중 없는 번호를 고를경우
+					if (select > CategoryList->count) {
+						printf("잘못된 번호입니다.");
+						break;
+					}
+					else if (select == 0) {
+						printf("메인으로 돌아갑니다.\n");
+						break;
+					}
+					List* categoryList = Category_Find(CategoryList, select); //추가할 카테고리 가져오기
+					while (1) {
+						print_List(categoryList); //카테고리 출력
+						GoBack();
+						select = choice();
+						if (select == 1) {
+							select = choice();   //상품 선택
+
+							if (on == true) { // 로그인이 되어있다면 
+								ShoppingMenu();
+							}
+							else {
+								bool check;
+								printf("로그인이 필요합니다.\n 로그인 하시겠습니까?(Y/N)\n");
+								check = Consent();
+
+								if (check == true) {
+									bool check;
+									check = Login(memberpage, MemberList);
+
+									if (check == true) {
+										on = true;
+									}
+									else {
+										printf("아이디 또는 비밀번호가 틀렸습니다.\n");
+									}
+								}
+							}
+						}
+						else if (select == 2) {
+							break;
+						}
+					}
+				}
 				break;
 			}
 			case 2: {  //찜
+
 			}
 			case 3: {  //마이페이지
 				if (on == true) {
@@ -81,27 +135,21 @@ int main(void) {
 					{
 					case 1: { //로그인
 						bool check;
-						while (1) {
-							//아이디&비밀번호 입력
-							char * id = ID_Enter();
-							char* pw = Password_Enter();
+						check = Login(memberpage, MemberList);
 
-							check = Login_Member_Search(memberpage, MemberList, id,pw);
-							if (check == true) {
-								on = true;
-								break;
-							}
-							else {
-								printf("아이디 또는 비밀번호가 틀렸습니다.\n");
-								break;
-							}
+						if (check == true) {
+							on = true;
 						}
-						break;
+						else {
+							printf("아이디 또는 비밀번호가 틀렸습니다.\n");
+						}
+					break;
 					}
 					case 2: { //회원가입
 						bool check;
 
 						//회원가입 동의 여부체크
+						printf("회원가입하는것에 동의합니까?(Y / N)\n");
 						check = Consent();
 						if (check == false) {
 							printf("메인으로 돌아갑니다.\n");
@@ -183,7 +231,7 @@ int main(void) {
 				Remove_Product(categorylist, select);
 				break;
 			}
-			case 5: {  //구매하기
+			case 5: {  
 
 			}
 			case 6: {
