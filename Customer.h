@@ -34,6 +34,17 @@ void NotJoinMenu() {             //비회원 메뉴
 	printf("2. 회원가입\n");
 	printf("3. 종료\n");
 }
+void ShoppingMenu() {
+	printf("1. 구매하기\n");
+	printf("2. 찜하기\n");
+	printf("3. 장바구니 넣기\n");
+	printf("4.로그아웃\n");
+	printf("\n");
+}
+void GoBack() {
+	printf("1. 쇼핑한다.\n");
+	printf("2. 뒤로가기.\n");
+}
 
 Member_List* create_MemberList() {
 	Member_List* list = new Member_List;
@@ -50,7 +61,6 @@ Member_Page* create_Page() {
 }
 bool Consent() { //회원가입 동의 출력
 	char result;
-	printf("회원가입하는것에 동의합니까?(Y / N)\n");
 	printf("입력:");
 
 	scanf_s("%c", &result, sizeof(result));
