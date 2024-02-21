@@ -11,6 +11,7 @@ void Product_Push(List* list, Product*product,int* number); //상품 추가
 void Remove_Product(List* list, int number); //상품 제거
 void print_CategoryNum(CategoryList* list); //카테고리 선택 창
 void print_List(List* list); //리스트 출력
+void Category_Print(CategoryList* list); //카테고리 출력
 
 //Customer
 void JoinMenu(); //회원 메뉴
@@ -52,6 +53,7 @@ int main(void) {
 			switch (select)
 			{
 			case 1: {  //카테고리
+				Category_Print(CategoryList);
 				break;
 			}
 			case 2: {  //찜
@@ -91,6 +93,7 @@ int main(void) {
 							}
 							else {
 								printf("아이디 또는 비밀번호가 틀렸습니다.\n");
+								break;
 							}
 						}
 						break;
