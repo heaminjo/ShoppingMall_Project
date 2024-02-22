@@ -32,6 +32,7 @@ bool Login_Member_Search(Member_Page* page, Member_List* list, char* id, char* p
 void Page_Login(Member_Page* page, Member* member);//페이지에 로그인
 void Page_print(Member_Page* page); //회원 페이지 출력
 
+Product* Product_Find(List* list, int number);  //상품 찾기
 
 int main(void) {
 
@@ -74,22 +75,44 @@ int main(void) {
 						break;
 					}
 					List* categoryList = Category_Find(CategoryList, select); //추가할 카테고리 가져오기
-					while (1) {
 						print_List(categoryList); //카테고리 출력
-						GoBack();
+						GoBack();                 //쇼핑? 뒤로가기 ?
 						select = choice();
-						if (select == 1) {
-							select = choice();   //상품 선택
-
+						while (1) {        
+						if (select == 1) {     //쇼핑한다.
 							if (on == true) { // 로그인이 되어있다면 
+								while (1) {
+									printf("\n");
+									printf("상품");
+									select = choice();   //상품 선택
+									Product* product = Product_Find(categoryList, select);
+									printf("\n");
+	
+									if (product != NULL) {
+										break;
+									}
+									else {
+										printf("없는 번호입니다.\n다시 입력해주세요.\n");
+									}
+								}
 								ShoppingMenu();
+								select = choice();
+								switch (select)
+								{
+								case 1: {     
+
+									Buy_Product(memberpage);
+								}
+								default:
+									break;
+								}
 							}
-							else {
+							else {               //로그인이 안되어있다.
 								bool check;
 								printf("로그인이 필요합니다.\n 로그인 하시겠습니까?(Y/N)\n");
 								check = Consent();
 
-								if (check == true) {
+								if (check == true) {  //로그인동의
 									bool check;
 									check = Login(memberpage, MemberList);
 
@@ -98,7 +121,12 @@ int main(void) {
 									}
 									else {
 										printf("아이디 또는 비밀번호가 틀렸습니다.\n");
+										break;
 									}
+								}
+								else {         //로그인 비동의
+									printf("돌아갑니다.\n");
+									break;
 								}
 							}
 						}
@@ -113,23 +141,23 @@ int main(void) {
 
 			}
 			case 3: {  //마이페이지
-				if (on == true) {
+				if (on == true) {        //로그인일 경우
 					Page_print(memberpage);
-					JoinMenu();
+					JoinMenu();          //회원메뉴 출력
 					select = choice();
 					switch (select)
 					{
 					case 4: {  //로그아웃
 						printf("로그아웃합니다.\n");
+						Page_Logout(memberpage);
 						on = false;
-						memberpage->data = NULL;
 					}
-					default:
+					default: 
 						break;
 					}
 				}
-				else if(on == false) {
-					NotJoinMenu();
+				else if(on == false) {       //로그인이 안되있을경우
+					NotJoinMenu();        //비회원 매뉴 출력
 					select = choice();
 					switch (select)
 					{
@@ -247,4 +275,5 @@ int main(void) {
 		}
 	}
 	return 0;
+}
 }
